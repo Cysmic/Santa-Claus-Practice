@@ -1,16 +1,37 @@
 package sprites;
 
+import java.util.List;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import main.Game;
+import main.Main;
 
 public class Sled extends PhysicsSprite{
 
+	public static boolean canMove = false;
 	
 	public Sled(double x, double y, double width, double height, double vx, double vy, boolean hasGravity,
 			Color color) {
 		super(x, y, width, height, vx, vy, hasGravity, color);
 	}
 	
+	public void parseInput(Game game) {
+		
+		
+		this.setVx(0);
+		
+		Main main = Main.getInstance();
+		
+		
+		if(main.isPressed("A")) {
+			if (canMove)
+				this.setVx(-7.5);			
+		} else if(main.isPressed("D")){
+			if (canMove)
+				this.setVx(7.5);
+		}
+	}
 	@Override
 	public void draw(GraphicsContext context){
 		context.setFill(Color.RED);

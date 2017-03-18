@@ -2,6 +2,7 @@ package sprites;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Sprite {
 	
@@ -70,6 +71,13 @@ public class Sprite {
 	public void draw(GraphicsContext context){
 		context.setFill(color);
 		context.fillRect(x, y, width, height);
+	}
+	
+	public Rectangle getCollision(){
+		Rectangle rectangle = new Rectangle(this.getWidth(), this.getHeight());
+		rectangle.setTranslateX(this.getX());
+		rectangle.setTranslateY(this.getY());
+		return rectangle; 
 	}
 
 }

@@ -1,8 +1,11 @@
 package sprites;
 
+import java.util.List;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import main.Game;
 import main.Main;
 import main.Util;
 
@@ -21,20 +24,53 @@ public class Player extends PhysicsSprite {
 		super(x, y, width, height, vx, vy, hasGravity, color);
 	}
 
-	public void parseInput() {
+	public void parseInput(Game game) {
 		if(reload > 0) {
 			reload--;
 		}
 		
-
+		boolean moveLeft = true, moveRight = true;
+		boolean moveDown = true;
+		
 		this.setVx(0);
 		
+		List<Sprite> sprites = game.sprites;
+		
 		Main main = Main.getInstance();
-		if(main.isPressed("A"))
-			this.setVx(-7.5);
-		else if(main.isPressed("D")){
-			this.setVx(7.5);
-		}		
+		
+		for(int i = sprites.size()-1; i >= 0; i--) {
+			Sprite sprite = sprites.get(i);
+			if(sprite instanceof Sled){
+				if (this.getCollision().getBoundsInParent().intersects(sprite.getCollision().getBoundsInParent())){
+					if(main.isPressed("A")) {
+						//if (this.getCollision().getTranslateX() == sprite.getCollision().getTranslateX() + 75) {
+							if(main.isPressed("E")) {
+								((Sled) sprite).canMove = true;
+							}
+						//}	
+					}
+					else if(main.isPressed("D")){
+						//if (this.getCollision().getTranslateX() -50 == sprite.getCollision().getTranslateX()) {
+						if(main.isPressed("E")) {
+							((Sled) sprite).canMove = true;
+						}
+						//}
+					}
+					if (this.getCollision().getTranslateY() == sprite.getCollision().getTranslateY()) {
+						moveDown = false;
+					}
+					
+				}
+			}
+		}
+			
+		if(main.isPressed("A")) {
+			if (moveLeft)
+				this.setVx(-7.5);			
+		} else if(main.isPressed("D")){
+			if (moveRight)
+				this.setVx(7.5);
+		}
 		
 		if(main.isPressed("W") && System.currentTimeMillis() - lastJumped >= 500 && this.getVy() == 0){
 			this.setVy(this.getVy() - 5);
@@ -45,8 +81,34 @@ public class Player extends PhysicsSprite {
 			main.game.sprites.add(new Coal(getX(), getY(), this.getVx() < 0 ? -40 : 40, 10));
 			reload = RELOAD_TIME;
 		}
+		
+		if (moveDown == false) {
+			//this.setX(340);
+			//this.setY(514);
+			this.setVy(0);
+			this.setGravity(false);
+		}
 	}
 
+	@Override
+	public void tick(int timePassed){
+		setX(getX() + this.getVx() * timePassed);
+		if(this.getGravity()){
+			double targetY = getY() + (this.getVy() + GRAVITY * timePassed / 2) * timePassed;
+			double bottom = Main.getInstance().HEIGHT*9/10.0 - this.getHeight();
+			if(targetY <= bottom){
+				setY(targetY);
+				setVy(getVy() + GRAVITY * timePassed);
+			}
+			else if(this.getVy() > 0){
+				setY(bottom);
+				setVy(0);
+			}
+		} else {
+			
+			return;
+		}
+	}
 	@Override
 	public void draw(GraphicsContext context) {
 

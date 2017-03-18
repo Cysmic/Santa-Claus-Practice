@@ -51,7 +51,10 @@ public class Game {
 		for(int i = sprites.size()-1; i >= 0; i--) {
 			Sprite sprite = sprites.get(i);
 			if(sprite instanceof Player)
-				((Player)sprite).parseInput();
+				((Player)sprite).parseInput(this);
+			if(sprite instanceof Sled)
+				((Sled)sprite).parseInput(this);
+			/*
 			if(sprite instanceof Bomb)
 			{
 				if(((Bomb)sprite).checkCollisionFour(player) == true){
@@ -70,11 +73,12 @@ public class Game {
 				//} else {
 				//	player.setGravity(true);
 				//}
-				if(((Sled)sprite).checkCollisionFour(player) == true){
-					player.setVy(0);
-					player.setGravity(false);
-				}
+				//if(((Sled)sprite).checkCollisionFour(player) == true){
+					//player.setVy(0);
+					//player.setGravity(false);
+				//}
 			}
+			*/
 			sprite.tick();
 			sprite.draw(context);
 		}
