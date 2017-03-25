@@ -9,7 +9,7 @@ import main.Game;
 import main.Main;
 import main.Util;
 
-public class Player extends PhysicsSprite {
+public class PlayerTwo extends PhysicsSprite {
 
 	Image image;
 	double theta;
@@ -20,7 +20,7 @@ public class Player extends PhysicsSprite {
 	public boolean canMoveLeft = true;
 	private boolean canCombine = false;
 	int i = -1;
-	public Player(double x, double y, double width, double height, double vx, double vy, boolean hasGravity,
+	public PlayerTwo(double x, double y, double width, double height, double vx, double vy, boolean hasGravity,
 			Color color) {
 		super(x, y, width, height, vx, vy, hasGravity, color);
 	}
@@ -29,6 +29,7 @@ public class Player extends PhysicsSprite {
 		if(reload > 0) {
 			reload--;
 		}
+		
 		
 		
 		//boolean moveLeft = true, moveRight = true;
@@ -40,8 +41,12 @@ public class Player extends PhysicsSprite {
 		Sprite sprite = null;
 		Main main = Main.getInstance();
 		
+		i = checkCollisionX(sprites, false);
+		if (i != -1){
+			this.setVy(-1);
+		}
 			
-		if(main.isPressed("A")) {
+		if(main.isPressed("LEFT")) {
 			i = checkCollisionX(sprites, false);
 			if (i == -1) {
 				this.setVx(-7.5);
@@ -51,7 +56,7 @@ public class Player extends PhysicsSprite {
 					canCombine = true;
 				}
 			}
-		} else if(main.isPressed("D")){
+		} else if(main.isPressed("RIGHT")){
 			i = checkCollisionX(sprites, true);
 			if (i == -1) {
 				this.setVx(7.5);
@@ -63,21 +68,21 @@ public class Player extends PhysicsSprite {
 			}
 		}
 		
-		if(main.isPressed("E")) {
+		if(main.isPressed("SHIFT")) {
 			if (canCombine) {
-				this.setColor(Color.GOLD);
+				this.setColor(Color.MIDNIGHTBLUE);
 				this.setWidth(75);
 				sprites.remove(i);
 				
 			}
 		}
 		
-		if(main.isPressed("W") && System.currentTimeMillis() - lastJumped >= 500 && this.getVy() == 0){
+		if(main.isPressed("UP") && System.currentTimeMillis() - lastJumped >= 500 && this.getVy() == 0){
 			this.setVy(this.getVy() - 5);
 			lastJumped = System.currentTimeMillis();
 		}
 		
-		if(main.isPressed("T") && reload == 0) {
+		if(main.isPressed("SLASH") && reload == 0) {
 			main.game.sprites.add(new Coal(getX(), getY(), this.getVx() < 0 ? -40 : 40, 10));
 			reload = RELOAD_TIME;
 		}
@@ -168,7 +173,7 @@ public class Player extends PhysicsSprite {
 		for(int i = sprites.size()-1; i >= 0; i--) {
 			
 			Sprite sprite = sprites.get(i);
-			if (!(sprite instanceof Player)) {
+			if (!(sprite instanceof PlayerTwo)) {
 				System.out.println("x_s =" + sprite.getX());
 					if (this.getCollision().getBoundsInParent().intersects(sprite.getCollision().getBoundsInParent())){
 						System.out.println("Collide1");
@@ -194,8 +199,7 @@ public class Player extends PhysicsSprite {
 		for(int i = sprites.size()-1; i >= 0; i--) {
 			
 			Sprite sprite = sprites.get(i);
-			if (!(sprite instanceof Player)) {
-				System.out.println("x_s =" + sprite.getY());
+			if (!(sprite instanceof PlayerTwo)) {
 					if (this.getCollision().getBoundsInParent().intersects(sprite.getCollision().getBoundsInParent())){
 						System.out.println("Collide1");
 							if (moveUp) {

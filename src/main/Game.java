@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import sprites.Coal;
 import sprites.PhysicsSprite;
 import sprites.Player;
+import sprites.PlayerTwo;
 import sprites.Sprite;
 import sprites.Present;
 import sprites.Sled;
@@ -21,6 +22,7 @@ public class Game {
 	public List<Sprite> sprites = new ArrayList<Sprite>();
 	
 	public Player player;
+	public PlayerTwo playerT;
 	
 	public Game() {
 		instance = this;
@@ -33,9 +35,12 @@ public class Game {
 	
 	public void initialize() {
 		player = new Player(100, 100, 50, 50, 0, 0, true, Color.WHITESMOKE);
-		sprites.add(player); // False for now since we don't have a floor
-		sprites.add(new Present(150, 644, 20, 20, Color.DEEPSKYBLUE));
-		sprites.add(new Bomb(290, 644, 20, 20, Color.DEEPSKYBLUE));
+		playerT = new PlayerTwo(170, 170, 50, 50, 0, 0, true, Color.BLUEVIOLET);
+		sprites.add(player);
+		sprites.add(playerT);
+		// False for now since we don't have a floor
+		//sprites.add(new Present(150, 644, 20, 20, Color.DEEPSKYBLUE));
+		//sprites.add(new Bomb(290, 644, 20, 20, Color.DEEPSKYBLUE));
 		sprites.add(new Sled(340, 614, 75, 50, 0, 0, true, Color.RED));
 	}
 	
@@ -48,10 +53,13 @@ public class Game {
 		context.setFill(Color.BLACK);
 		context.fillRect(0, 0, main.WIDTH, main.HEIGHT);
 		
+		System.out.println("Size " + sprites.size());
 		for(int i = sprites.size()-1; i >= 0; i--) {
 			Sprite sprite = sprites.get(i);
 			if(sprite instanceof Player)
 				((Player)sprite).parseInput(this);
+			if(sprite instanceof PlayerTwo)
+				((PlayerTwo)sprite).parseInput(this);
 			if(sprite instanceof Sled)
 				((Sled)sprite).parseInput(this);
 			/*
@@ -84,4 +92,7 @@ public class Game {
 		}
 	}
 	
+	public void handleKey() {
+		
+	}
 }

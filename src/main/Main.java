@@ -99,7 +99,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
 
 	@Override
 	public void handle(KeyEvent event) {
-		//System.out.println(event.getCode().toString());
+		System.out.println(event.getCode().toString());
 		String code = event.getCode().toString();
 		
 		if(event.getEventType() == KeyEvent.KEY_PRESSED && !blocked.containsKey(code))
