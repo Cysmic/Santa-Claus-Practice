@@ -13,6 +13,7 @@ import sprites.Sprite;
 import sprites.Present;
 import sprites.Sled;
 import sprites.Bomb;
+import sprites.Block;
 
 public class Game {
 	
@@ -33,6 +34,17 @@ public class Game {
 		return instance;
 	}
 	
+	public void drawTen(){
+		int p = 0;
+		int l = 0;
+		for (int i = 0; i<15; i++){
+			p = (int) (Math.random()*1200);
+			l = (int) (Math.random()*600);
+			Block blockTwo = new Block(p, l);
+			sprites.add(blockTwo);
+		}
+	}
+	
 	public void initialize() {
 		player = new Player(100, 100, 50, 50, 0, 0, true, Color.WHITESMOKE);
 		playerT = new PlayerTwo(170, 170, 50, 50, 0, 0, true, Color.BLUEVIOLET);
@@ -42,6 +54,7 @@ public class Game {
 		//sprites.add(new Present(150, 644, 20, 20, Color.DEEPSKYBLUE));
 		//sprites.add(new Bomb(290, 644, 20, 20, Color.DEEPSKYBLUE));
 		sprites.add(new Sled(340, 614, 75, 50, 0, 0, true, Color.RED));
+		drawTen();
 	}
 	
 	public void renderFrame(GraphicsContext context, int frame) {
